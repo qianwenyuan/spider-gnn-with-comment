@@ -502,7 +502,7 @@ def evaluate(gold, predict, question, db_dir, etype, kmaps):
             scores[level]['partial'][type_] = {'acc': 0., 'rec': 0., 'f1': 0.,'acc_count':0,'rec_count':0}
 
     question_json_blob = json.load(open(question, "r"))
-    question_sql_dict = {}
+    question_sql_dict: Dict[str, str] = {}
     for instance in question_json_blob:
         question_sql_dict[instance['query']] = instance['question']
 
@@ -571,7 +571,7 @@ def evaluate(gold, predict, question, db_dir, etype, kmaps):
             if exact_score == 0:
                 print("{} pred: {}".format(hardness,p_str))
                 print("{} gold: {}".format(hardness,g_str))
-                print("{} question: {}".format(hardness, question_sql_dict[g_sql]))
+                print("{} question: {}".format(hardness, question_sql_dict[g_str]))
                 print("")
             scores[hardness]['exact'] += exact_score
             scores['all']['exact'] += exact_score
