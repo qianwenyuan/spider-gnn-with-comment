@@ -24,7 +24,7 @@ import json
 import sqlite3
 import argparse
 
-from spider_evaluation.process_sql import get_schema, Schema, get_sql
+from process_sql import get_schema, Schema, get_sql
 
 # Flag to disable value evaluation
 DISABLE_VALUE = True
@@ -503,8 +503,10 @@ def evaluate(gold, predict, question, db_dir, etype, kmaps):
 
     question_json_blob = json.load(open(question, "r"))
     question_sql_dict: Dict[str, str] = {}
+    db_sql_dict: Dict[str, str] = {}
     for instance in question_json_blob:
         question_sql_dict[instance['query']] = instance['question']
+        db_sql_dict[instance['query']] = instance['db_id']
 
     eval_err_num = 0
     for p, g in zip(plist, glist):
@@ -572,6 +574,7 @@ def evaluate(gold, predict, question, db_dir, etype, kmaps):
                 print("{} pred: {}".format(hardness,p_str))
                 print("{} gold: {}".format(hardness,g_str))
                 print("{} question: {}".format(hardness, question_sql_dict[g_str]))
+                print("{} db_id: {}".format(hardness, db_sql_dict[g_str])) 
                 print("")
             scores[hardness]['exact'] += exact_score
             scores['all']['exact'] += exact_score
